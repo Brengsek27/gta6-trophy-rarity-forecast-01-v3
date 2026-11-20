@@ -1,4 +1,19 @@
-"""Forecast an Exophase refresh or extrapolate an observed live history."""
+"""Forecast an Exophase refresh or extrapolate an observed live history.
+
+For live histories, combine a weighted logit-scale rarity trend with a counts
+model that extrapolates log earner counts and log tracked-player counts. Fit
+both on log time since release, blend their implied logits, and apply the
+existing horizon correction and uncertainty terms to obtain quantiles.
+
+For frozen histories, forecast the refresh state in earner counts. The
+competition's own published aggregates recover the launch-night refresh to
+3,868 tracked players and 4,276 trophies earned. Reconstruct current earner
+counts from the displayed rates, add the recovered per-trophy increments,
+and divide by the refreshed player count, preserving universal trophies.
+Scale that same refresh for other starting player counts. This forecasts
+the refreshed page the frozen page is about to become, rather than guessing
+how its displayed percentages might dilute as more players arrive.
+"""
 
 import json
 import math
